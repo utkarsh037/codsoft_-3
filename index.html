@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Calculator</title>
+    <h1>Welcome To Simple Calculator By Utkarsh</h1>
+ 
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9; 
+            color: #333; 
+            transition: background-color 0.5s, color 0.5s; 
+        }
+
+        body.dark-mode {
+            background-color: #333; 
+            color: #f9f9f9; 
+        }
+        h1{
+            padding-bottom: 30%;
+            padding-left: 0%;
+            font-style: italic;
+            
+        }
+
+        #calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: pulse-border 2s infinite;
+            position: fixed;
+        }
+
+        @keyframes pulse-border {
+            0% {
+                border-color: #ccc;
+            }
+            50% {
+                border-color: #f9f9f9;
+            }
+            100% {
+                border-color: #ccc;
+            }
+        }
+
+        input {
+            grid-column: span 4;
+            padding: 10px;
+            font-size: 18px;
+            text-align: right;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translate(0, -5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div id="calculator">
+    <input type="text" id="display" readonly>
+    <button onclick="appendCharacter('7')">7</button>
+    <button onclick="appendCharacter('8')">8</button>
+    <button onclick="appendCharacter('9')">9</button>
+    <button onclick="setOperator('+')">+</button>
+
+    <button onclick="appendCharacter('4')">4</button>
+    <button onclick="appendCharacter('5')">5</button>
+    <button onclick="appendCharacter('6')">6</button>
+    <button onclick="setOperator('-')">-</button>
+
+    <button onclick="appendCharacter('1')">1</button>
+    <button onclick="appendCharacter('2')">2</button>
+    <button onclick="appendCharacter('3')">3</button>
+    <button onclick="setOperator('*')">*</button>
+
+    <button onclick="appendCharacter('0')">0</button>
+    <button onclick="clearDisplay()">C</button>
+    <button onclick="calculateResult()">=</button>
+    <button onclick="setOperator('/')">/</button>
+
+    <button onclick="toggleTheme()">Light/Dark</button>
+</div>
+
+<script>
+    let display = document.getElementById('display');
+    let currentInput = '';
+
+    function appendCharacter(char) {
+        currentInput += char;
+        display.value = currentInput;
+    }
+
+    function clearDisplay() {
+        currentInput = '';
+        display.value = '';
+    }
+
+    function setOperator(operator) {
+        currentInput += ` ${operator} `;
+        display.value = currentInput;
+    }
+
+    function calculateResult() {
+        try {
+            currentInput = eval(currentInput).toString();
+            display.value = currentInput;
+        } catch (error) {
+            display.value = 'Error';
+        }
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', function(event) {
+        const key = event.key;
+
+        if (/[0-9]/.test(key)) {
+            appendCharacter(key);
+        } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+            setOperator(key);
+        } else if (key === 'Enter') {
+            event.preventDefault(); 
+            calculateResult();
+        } else if (key === 'c' || key === 'C') {
+            clearDisplay();
+        }
+    });
+</script>
+
+</body>
+</html>
